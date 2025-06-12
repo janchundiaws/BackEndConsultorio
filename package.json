@@ -1,0 +1,22 @@
+{
+  "name": "node-postgresql-restapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file .env --watch src/index.js",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.1.1",
+    "eslint": "^9.1.0"
+  }
+}
