@@ -6,6 +6,7 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/index.controller.js";
+import { verificarToken } from '../helpers/jwt.js';
 
 const router = Router();
 
@@ -26,7 +27,7 @@ const router = Router();
  *       200:
  *         description: Lista de usuarios
  */
-router.get("/users", getUsers);
+router.get("/users",verificarToken, getUsers);
 
 /**
  * @swagger
