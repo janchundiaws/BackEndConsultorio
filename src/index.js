@@ -2,6 +2,8 @@ import express from "express";
 import usersRoutes from "./routes/users.routes.js";
 import morgan from "morgan";
 import { PORT } from "./config.js";
+import swaggerUi from "swagger-ui-express"; // ✅ usar import
+import swaggerSpec from "./swagger.js";      // ✅ asegúrate de tener este archivo
 
 const app = express();
 
@@ -11,7 +13,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(usersRoutes);
+//app.use(usersRoutes);
+
+// Documentación Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// // Rutas de la API
+ app.use('/api', usersRoutes); // ⬅️ Monta tus rutas bajo /api
+
 
 app.listen(PORT);
 // eslint-disable-next-line no-console
