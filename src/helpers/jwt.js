@@ -1,9 +1,13 @@
 import jwt from 'jsonwebtoken';
+import { estaEnBlacklist } from './tokenBlacklist.js';
 
 const SECRET = 'janchundia'; // usa dotenv en producción
 
 export const generarToken = (usuario) => {
-  return jwt.sign({ id: usuario.id, correo: usuario.correo }, SECRET, {
+  return jwt.sign({ id: usuario.id, 
+                    correo: usuario.correo ,
+                    roles: ['admin', 'asistente']//usuario.rol, // 👈 importante
+    }, SECRET, {
     expiresIn: '2h',
   });
 };
@@ -13,6 +17,10 @@ export const verificarToken = (req, res, next) => {
 
   if (!token) {
     return res.status(401).json({ mensaje: 'Token no proporcionado' });
+  }
+
+  if (estaEnBlacklist(token)) {
+    return res.status(401).json({ mensaje: 'Token inválido (logout)' });
   }
 
   try {

@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { generarToken } from '../helpers/jwt.js';
+import { agregarATokenBlacklist } from '../helpers/tokenBlacklist.js';
 import { pool } from "../db.js";
 
 const router = Router();
@@ -42,6 +43,26 @@ router.post('/login', async (req, res) => {
 
   const token = generarToken(usuario);
   res.json({ token });
+});
+
+/**
+ * @swagger
+ * /logout:
+ *   post:
+ *     summary: Cerrar sesión (logout)
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Sesión cerrada
+ */
+router.post('/logout', (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (token) {
+    agregarATokenBlacklist(token);
+  }
+  res.json({ mensaje: 'Sesión cerrada correctamente' });
 });
 
 export default router;

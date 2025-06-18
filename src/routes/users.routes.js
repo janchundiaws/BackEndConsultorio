@@ -7,6 +7,7 @@ import {
   deleteUser,
 } from "../controllers/index.controller.js";
 import { verificarToken } from '../helpers/jwt.js';
+import { requireRoles } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -27,7 +28,7 @@ const router = Router();
  *       200:
  *         description: Lista de usuarios
  */
-router.get("/users",verificarToken, getUsers);
+router.get("/users",verificarToken,requireRoles('admin'),  getUsers);
 
 /**
  * @swagger
@@ -48,7 +49,7 @@ router.get("/users",verificarToken, getUsers);
  *       404:
  *         description: Usuario no encontrado
  */
-router.get("/users/:id", getUserById);
+router.get("/users/:id",verificarToken,requireRoles('user'), getUserById);
 
 /**
  * @swagger
