@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { generarToken } from '../helpers/jwt.js';
 import { agregarATokenBlacklist } from '../helpers/tokenBlacklist.js';
 import { pool } from "../db.js";
+import { tenantMiddleware } from '../middlewares/tenant.middleware.js';
 
 const router = Router();
 
@@ -29,7 +30,7 @@ const router = Router();
  *       200:
  *         description: Retorna el token JWT
  */
-router.post('/login', async (req, res) => {
+router.post('/login',tenantMiddleware, async (req, res) => {
   const { correo, password } = req.body;
 
   //obtener los usuarios de la base de datos para comparacion y logeo

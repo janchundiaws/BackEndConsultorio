@@ -6,7 +6,8 @@ const SECRET = 'janchundia'; // usa dotenv en producción
 export const generarToken = (usuario) => {
   return jwt.sign({ id: usuario.id, 
                     correo: usuario.correo ,
-                    roles: ['admin', 'asistente']//usuario.rol, // 👈 importante
+                    roles: ['admin', 'asistente'],//usuario.rol, // 👈 importante
+                    tenant_id: 'admin'
     }, SECRET, {
     expiresIn: '2h',
   });
