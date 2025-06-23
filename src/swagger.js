@@ -15,8 +15,8 @@ const options = {
         url: `http://localhost:${PORT}/api`,
       },
       {
-        url: `https://backendconsultorio.onrender.com:${PORT}/api`,
-      }
+        url: `https://backendconsultorio.onrender.com/api`,
+      }      
     ],    
     components: {
       securitySchemes: {
