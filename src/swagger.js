@@ -14,7 +14,10 @@ const options = {
       {
         url: `http://localhost:${PORT}/api`,
       },
-    ],
+      {
+        url: `https://localhost:${PORT}/api`,
+      }
+    ],    
     components: {
       securitySchemes: {
         bearerAuth: {
