@@ -15,7 +15,7 @@ const options = {
         url: `http://localhost:${PORT}/api`,
       },
       {
-        url: `https://localhost:${PORT}/api`,
+        url: `https://backendconsultorio.onrender.com:${PORT}/api`,
       }
     ],    
     components: {
