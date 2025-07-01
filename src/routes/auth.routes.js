@@ -15,6 +15,13 @@ const router = Router();
  *   post:
  *     summary: Autenticación de usuario
  *     tags: [Auth]
+ *     parameters:
+ *       - in: header
+ *         name: x-tenant-id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del tenant que realiza la solicitud
  *     requestBody:
  *       required: true
  *       content:
@@ -37,7 +44,7 @@ router.post('/login',tenantMiddleware, async (req, res) => {
   const response = await pool.query("SELECT * FROM identity.users WHERE email = $1", [correo]);
   //res.json(response.rows);
   console.log(response);
-  const usuario = response.rows.find(u => u.email === correo && u.email === password);
+  const usuario = response.rows.find(u => u.email === correo && u.password === password);
   if (!usuario ) {//|| !bcrypt.compareSync(password, usuario.email)
     return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
   }
