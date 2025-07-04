@@ -1,5 +1,6 @@
 import express from "express";
 import usersRoutes from "./routes/users.routes.js";
+import patientsRoutes from "./routes/patients.routes.js";
 import authRoutes from './routes/auth.routes.js';
 import morgan from "morgan";
 import cors from 'cors';
@@ -30,6 +31,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // // Rutas de la API
 app.use('/api', authRoutes); // ⬅️ Rutas de autenticacion
 app.use('/api', usersRoutes); // ⬅️ Rutas de gestion de los  usuarios
+app.use('/api', patientsRoutes); // ⬅️ Rutas de gestion de los  pcientes
 
 
 

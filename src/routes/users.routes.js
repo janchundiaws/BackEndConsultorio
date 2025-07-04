@@ -5,7 +5,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
-} from "../controllers/index.controller.js";
+} from "../controllers/users.controller.js";
 import { verificarToken } from '../helpers/jwt.js';
 import { requireRoles } from '../middlewares/auth.middleware.js';
 
