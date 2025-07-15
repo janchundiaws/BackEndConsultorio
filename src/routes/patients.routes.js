@@ -110,6 +110,10 @@ router.get('/patients/:id', getPatientById);
  *           schema:
  *             type: object
  *             properties:
+ *               document_type_id:
+ *                 type: string
+ *               document_id:
+ *                 type: string
  *               name:
  *                 type: string
  *               last_name:
@@ -119,6 +123,15 @@ router.get('/patients/:id', getPatientById);
  *               address:
  *                 type: string
  *               email:
+ *                 type: string
+ *               birth_date:
+ *                 type: string
+ *                 format: date
+ *               gender:
+ *                 type: string
+ *               marital_status_id:
+ *                 type: string
+ *               blood_type_id:
  *                 type: string
  *               occupation:
  *                 type: string

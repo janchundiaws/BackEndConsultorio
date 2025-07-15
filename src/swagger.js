@@ -6,7 +6,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API del Consultorio Odontológico',
+      title: 'API - Consultorio Odontológico',
       version: '1.0.0',
       description: 'Documentación Swagger para la API del consultorio',
     },

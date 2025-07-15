@@ -2,6 +2,7 @@ import express from "express";
 import usersRoutes from "./routes/users.routes.js";
 import patientsRoutes from "./routes/patients.routes.js";
 import authRoutes from './routes/auth.routes.js';
+import configRoutes from './routes/config.routes.js';
 import morgan from "morgan";
 import cors from 'cors';
 import { PORT } from "./config.js";
@@ -32,6 +33,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api', authRoutes); // ⬅️ Rutas de autenticacion
 app.use('/api', usersRoutes); // ⬅️ Rutas de gestion de los  usuarios
 app.use('/api', patientsRoutes); // ⬅️ Rutas de gestion de los  pcientes
+app.use('/api', configRoutes); // ⬅️ Rutas de gestion de los tipos de sangre
 
 
 
