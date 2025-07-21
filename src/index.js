@@ -13,13 +13,13 @@ const app = express();
 
 app.use(morgan("dev"));
 
-// Configuración básica (permitir todas las solicitudes desde cualquier origen)
-// app.use(cors({
-//     origin: 'http://localhost:3000', // cambia por el dominio de tu frontend
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     credentials: true
-//   }));
-app.options('*', cors()); // habilita preflight para todas las rutas
+app.use(cors({
+    origin: 'http://localhost:51490', // o '*', solo para pruebas
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }));
+//app.options('*', cors()); // habilita preflight para todas las rutas
 
 // middlewares
 app.use(express.json());
