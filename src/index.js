@@ -3,6 +3,7 @@ import usersRoutes from "./routes/users.routes.js";
 import patientsRoutes from "./routes/patients.routes.js";
 import authRoutes from './routes/auth.routes.js';
 import configRoutes from './routes/config.routes.js';
+import specialtiesDentistsRoutes from './routes/specialty.routes.js';
 import morgan from "morgan";
 import cors from 'cors';
 import { PORT } from "./config.js";
@@ -14,12 +15,12 @@ const app = express();
 app.use(morgan("dev"));
 
 app.use(cors({
-    origin: 'http://localhost:51490', // o '*', solo para pruebas
+    origin: '*', //solo para pruebas
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id'],
     credentials: true
   }));
-//app.options('*', cors()); // habilita preflight para todas las rutas
+app.options('*', cors()); // habilita preflight para todas las rutas
 
 // middlewares
 app.use(express.json());
@@ -34,6 +35,7 @@ app.use('/api', authRoutes); // ⬅️ Rutas de autenticacion
 app.use('/api', usersRoutes); // ⬅️ Rutas de gestion de los  usuarios
 app.use('/api', patientsRoutes); // ⬅️ Rutas de gestion de los  pcientes
 app.use('/api', configRoutes); // ⬅️ Rutas de gestion de los tipos de sangre
+app.use('/api', specialtiesDentistsRoutes); // ⬅️ Rutas de gestion de los tipos de sangre
 
 
 
