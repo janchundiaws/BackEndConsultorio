@@ -50,3 +50,13 @@ export const getAppointments = async (req, res) => {
   }
 
 };
+
+export const getMaritalStatus= async (req, res) => {
+  try{
+    const response = await pool.query("SELECT * FROM config.marital_status ORDER BY id ASC");
+    res.status(200).json(response.rows);
+  }  catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+};
