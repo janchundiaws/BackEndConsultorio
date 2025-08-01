@@ -4,6 +4,7 @@ import patientsRoutes from "./routes/patients.routes.js";
 import authRoutes from './routes/auth.routes.js';
 import configRoutes from './routes/config.routes.js';
 import specialtiesDentistsRoutes from './routes/specialty.routes.js';
+import clinicalHistoryRoutes from './routes/clinicalHistory.routes.js';
 import morgan from "morgan";
 import cors from 'cors';
 import { PORT } from "./config.js";
@@ -36,6 +37,7 @@ app.use('/api', usersRoutes); // ⬅️ Rutas de gestion de los  usuarios
 app.use('/api', patientsRoutes); // ⬅️ Rutas de gestion de los  pcientes
 app.use('/api', configRoutes); // ⬅️ Rutas de gestion de los tipos de sangre
 app.use('/api', specialtiesDentistsRoutes); // ⬅️ Rutas de gestion de los tipos de sangre
+app.use('/api', clinicalHistoryRoutes); // ⬅️ Rutas de gestion de historiales clínicos
 
 
 
