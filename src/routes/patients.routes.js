@@ -75,21 +75,27 @@ router.get('/patients/', getPatients);
 
 /**
  * @swagger
- * /patients/{id}:
+ * /patients/{filterField}/{value}:
  *   get:
- *     summary: Obtener un paciente por ID
+ *     summary: Obtener un paciente por FILTROS
  *     tags: [Patients]
  *     parameters:
- *       - name: id
+*       - name: filterField
  *         in: path
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *           enum: [id, name, document]  # <-- combo de opciones* 
+ *       - name: value
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Datos del paciente
  */
-router.get('/patients/:id', getPatientById);
+router.get('/patients/:filterField/:value', getPatientById);
 
 /**
  * @swagger

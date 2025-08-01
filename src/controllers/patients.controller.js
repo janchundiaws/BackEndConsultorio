@@ -66,23 +66,50 @@ export const getPatients = async (req, res) => {
 
 // Obtener un paciente por ID
 export const getPatientById = async (req, res) => {
-  const { id } = req.params;
+
+  const { filterField, value } = req.params;
   const payload = decodeToken(req.headers.authorization);
+
   if (!payload) {
-        return res.status(401).json({ message: 'Token inválido o expirado' });
-    }
+    return res.status(401).json({ message: 'Token inválido o expirado' });
+  }
+
+  let query = "";
+  let queryValue = value;
+
+  switch (filterField) {
+    case 'id':
+      // Convertir a número (validar que sea entero)
+      const id = parseInt(value, 10);
+
+      if (isNaN(id)) {
+        return res.status(400).json({ error: 'ID inválido. Debe ser un número' });
+      }
+      queryValue = id;
+      query = 'SELECT * FROM office.patients WHERE id = $1 AND tenant_id = $2 AND status = 1';
+      break;
+
+    case 'name':
+      query = 'SELECT * FROM office.patients WHERE name ILIKE $1 AND tenant_id = $2 AND status = 1';
+      queryValue = `%${value}%`;
+      break;
+
+    case 'document':
+      query = 'SELECT * FROM office.patients WHERE document_id = $1 AND tenant_id = $2 AND status = 1';
+      break;
+
+    default:
+      return res.status(400).json({ error: 'Filtro inválido' });
+  }
 
   try {
-    const result = await pool.query(
-      'SELECT * FROM office.patients WHERE id = $1 AND tenant_id = $2 AND status = 1',
-      [id, payload.tenant_id]
-    );
+    const result = await pool.query(query, [queryValue, payload.tenant_id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "Paciente no encontrado" });
     }
 
-    res.json(result.rows[0]);
+    res.json(result.rows);
   } catch (error) {
     console.error('Error obteniendo paciente:', error);
     res.status(500).json({ message: "Error al obtener paciente" });
