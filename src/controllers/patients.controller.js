@@ -90,7 +90,7 @@ export const getPatientById = async (req, res) => {
       break;
 
     case 'name':
-      query = 'SELECT * FROM office.patients WHERE name ILIKE $1 AND tenant_id = $2 AND status = 1';
+      query = 'SELECT * FROM office.patients WHERE (name ILIKE $1 or last_name ILIKE $1) AND tenant_id = $2 AND status = 1';
       queryValue = `%${value}%`;
       break;
 
