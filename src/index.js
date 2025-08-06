@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.routes.js';
 import configRoutes from './routes/config.routes.js';
 import specialtiesDentistsRoutes from './routes/specialty.routes.js';
 import clinicalHistoryRoutes from './routes/clinicalHistory.routes.js';
+import healthRoutes from './routes/health.routes.js';
 import morgan from "morgan";
 import cors from 'cors';
 import { PORT } from "./config.js";
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 // Documentación Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // // Rutas de la API
+app.use('/api', healthRoutes); // ⬅️ Rutas de health check
 app.use('/api', authRoutes); // ⬅️ Rutas de autenticacion
 app.use('/api', usersRoutes); // ⬅️ Rutas de gestion de los  usuarios
 app.use('/api', patientsRoutes); // ⬅️ Rutas de gestion de los  pcientes
