@@ -500,24 +500,33 @@ router.get('/inventory/suppliers/', getSuppliers);
 
 /**
  * @swagger
- * /inventory/suppliers/{id}:
+ * /inventory/suppliers/{filterField}/{value}:
  *   get:
- *     summary: Get supplier by ID
+ *     summary: Get supplier by multiple filters
  *     tags: [Inventory]
  *     parameters:
- *       - name: id
+ *       - name: filterField
  *         in: path
  *         required: true
  *         schema:
- *           type: integer
- *         description: Supplier ID
+ *           type: string
+ *           enum: [id, code, name, business_name]
+ *         description: Filter field to search by
+ *       - name: value
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Value to search for
  *     responses:
  *       200:
  *         description: Supplier details
+ *       400:
+ *         description: Invalid filter
  *       404:
  *         description: Supplier not found
  */
-router.get('/inventory/suppliers/:id', getSupplierById);
+router.get('/inventory/suppliers/:filterField/:value', getSupplierById);
 
 // =====================================================
 // CATEGORIES AND UNITS ROUTES
