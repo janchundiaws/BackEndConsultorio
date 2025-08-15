@@ -26,6 +26,7 @@ import {
     // Suppliers
     createSupplier,
     getSuppliers,
+    getSupplierById,
     
     // Categories and Units
     getSupplyCategories,
@@ -495,6 +496,27 @@ router.post('/inventory/suppliers/', createSupplier);
  *         description: List of suppliers
  */
 router.get('/inventory/suppliers/', getSuppliers);
+
+/**
+ * @swagger
+ * /inventory/suppliers/{id}:
+ *   get:
+ *     summary: Get supplier by ID
+ *     tags: [Inventory]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Supplier ID
+ *     responses:
+ *       200:
+ *         description: Supplier details
+ *       404:
+ *         description: Supplier not found
+ */
+router.get('/inventory/suppliers/:id', getSupplierById);
 
 // =====================================================
 // CATEGORIES AND UNITS ROUTES

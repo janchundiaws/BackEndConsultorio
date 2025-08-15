@@ -684,6 +684,32 @@ export const getSuppliers = async (req, res) => {
     }
 };
 
+// Get supplier by ID
+export const getSupplierById = async (req, res) => {
+    const { id } = req.params;
+    const payload = decodeToken(req.headers.authorization);
+
+    if (!payload) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+    try {
+        const result = await pool.query(
+            'SELECT * FROM inventory.suppliers WHERE supplier_id = $1 AND tenant_id = $2 AND status = true',
+            [id, payload.tenant_id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Supplier not found' });
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error getting supplier:', error);
+        res.status(500).json({ message: "Error getting supplier" });
+    }
+};
+
 // =====================================================
 // CATEGORIES AND UNITS MANAGEMENT
 // =====================================================
