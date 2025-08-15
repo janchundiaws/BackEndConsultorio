@@ -497,6 +497,7 @@ router.post('/inventory/suppliers/', createSupplier);
  */
 router.get('/inventory/suppliers/', getSuppliers);
 
+
 /**
  * @swagger
  * /inventory/suppliers/{id}:

@@ -710,6 +710,7 @@ export const getSupplierById = async (req, res) => {
     }
 };
 
+
 // =====================================================
 // CATEGORIES AND UNITS MANAGEMENT
 // =====================================================
