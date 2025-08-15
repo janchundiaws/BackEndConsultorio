@@ -104,21 +104,33 @@ router.get('/inventory/supplies/', getSupplies);
 
 /**
  * @swagger
- * /inventory/supplies/{id}:
+ * /inventory/supplies/{filterField}/{value}:
  *   get:
- *     summary: Get supply by ID
+ *     summary: Get supply by multiple filters
  *     tags: [Inventory]
  *     parameters:
- *       - name: id
+ *       - name: filterField
  *         in: path
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *           enum: [id, code, name, category]
+ *         description: Filter field to search by
+ *       - name: value
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Value to search for
  *     responses:
  *       200:
  *         description: Supply details
+ *       400:
+ *         description: Invalid filter
+ *       404:
+ *         description: Supply not found
  */
-router.get('/inventory/supplies/:id', getSupplyById);
+router.get('/inventory/supplies/:filterField/:value', getSupplyById);
 
 /**
  * @swagger
