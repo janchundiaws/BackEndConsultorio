@@ -34,7 +34,7 @@ export const createSupply = async (req, res) => {
                 unit_cost, sale_price, min_stock, max_stock, main_supplier, warehouse_location,
                 created_by
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
             ) RETURNING *`,
             [
                 payload.tenant_id, code, name, description, category, unit_measure, presentation,
