@@ -771,10 +771,9 @@ export const getSupplierById = async (req, res) => {
     }
 };
 
-// Update supply
+// Update supplier
 export const updateSuppliers = async (req, res) => {
     const { id } = req.params;
-
     const payload = decodeToken(req.headers.authorization);
 
     if (!payload) {
@@ -794,7 +793,7 @@ export const updateSuppliers = async (req, res) => {
 
     try {
         const result = await pool.query(
-            `UPDATE inventory.master_supplies SET 
+            `UPDATE inventory.suppliers SET 
                 code = $1, name = $2, business_name = $3, tax_id = $4, address = $5,
                 phone = $6, email = $7, main_contact = $8, updated_by = $9
             WHERE supplier_id = $10 AND tenant_id = $11 RETURNING *`,
@@ -804,12 +803,16 @@ export const updateSuppliers = async (req, res) => {
             ]
         );
 
-    res.status(200).json(result.rows[0]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Supplier not found' });
+        }
 
-} catch (error) {
-    console.error('Error updating supplier:', error);
-    res.status(500).json({ message: "Error updating supplier" });
-}
+        res.status(200).json(result.rows[0]);
+
+    } catch (error) {
+        console.error('Error updating supplier:', error);
+        res.status(500).json({ message: "Error updating supplier" });
+    }
 };
 
 
