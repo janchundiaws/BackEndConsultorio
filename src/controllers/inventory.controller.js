@@ -771,7 +771,7 @@ export const getSupplierById = async (req, res) => {
     }
 };
 
-// Update supplier
+// Update suppliers
 export const updateSuppliers = async (req, res) => {
     const { id } = req.params;
     const payload = decodeToken(req.headers.authorization);
