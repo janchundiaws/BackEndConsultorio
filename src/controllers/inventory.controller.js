@@ -233,7 +233,7 @@ export const createIncomingTransaction = async (req, res) => {
             `INSERT INTO inventory.incoming_transactions (
                 tenant_id, transaction_number, transaction_date, supplier_id, invoice_number,
                 transaction_type, subtotal, tax_amount, total, notes, created_by
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
             [
                 payload.tenant_id, transaction_number, transaction_date, supplier_id, invoice_number,
                 transaction_type, subtotal, tax_amount, total, notes, payload.email
@@ -405,7 +405,7 @@ export const createOutgoingTransaction = async (req, res) => {
             `INSERT INTO inventory.outgoing_transactions (
                 tenant_id, transaction_number, transaction_date, transaction_type,
                 patient_id, dentist_id, reason, total, created_by
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
             [
                 payload.tenant_id, transaction_number, transaction_date, transaction_type,
                 patient_id, dentist_id, reason, total, payload.email
