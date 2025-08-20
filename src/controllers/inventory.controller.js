@@ -717,6 +717,7 @@ export const getSuppliers = async (req, res) => {
 // Get supplier by multiple filters
 export const getSupplierById = async (req, res) => {
     const { filterField, value } = req.params;
+
     const payload = decodeToken(req.headers.authorization);
 
     if (!payload) {
@@ -770,6 +771,86 @@ export const getSupplierById = async (req, res) => {
     }
 };
 
+// Update supply
+export const updateSuppliers = async (req, res) => {
+    const { id } = req.params;
+
+    const payload = decodeToken(req.headers.authorization);
+
+    if (!payload) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+    const {
+        code,
+        name,
+        business_name,
+        tax_id,
+        address,
+        phone,
+        email,
+        main_contact
+    } = req.body;
+
+    try {
+        const result = await pool.query(
+            `UPDATE inventory.master_supplies SET 
+                code = $1, name = $2, business_name = $3, tax_id = $4, address = $5,
+                phone = $6, email = $7, main_contact = $8, updated_by = $9
+            WHERE supplier_id = $10 AND tenant_id = $11 RETURNING *`,
+            [
+                code, name, business_name, tax_id, address, phone, email, main_contact,
+                payload.email, id, payload.tenant_id
+            ]
+        );
+
+    let query = "";
+    let queryValue = value;
+
+    switch (filterField) {
+        case 'id':
+            // Convert to number (validate that it's an integer)
+            const id = parseInt(value, 10);
+
+            if (isNaN(id)) {
+                return res.status(400).json({ error: 'Invalid ID. Must be a number' });
+            }
+            queryValue = id;
+            query = 'SELECT * FROM inventory.suppliers WHERE supplier_id = $1 AND tenant_id = $2 AND status = true';
+            break;
+
+        case 'code':
+            query = 'SELECT * FROM inventory.suppliers WHERE code = $1 AND tenant_id = $2 AND status = true';
+            break;
+
+        case 'name':
+            query = 'SELECT * FROM inventory.suppliers WHERE name ILIKE $1 AND tenant_id = $2 AND status = true';
+            queryValue = `%${value}%`;
+            break;
+
+        case 'business_name':
+            query = 'SELECT * FROM inventory.suppliers WHERE business_name ILIKE $1 AND tenant_id = $2 AND status = true';
+            queryValue = `%${value}%`;
+            break;
+
+        default:
+            return res.status(400).json({ error: 'Invalid filter' });
+    }
+
+    try {
+        const result = await pool.query(query, [queryValue, payload.tenant_id]);
+
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Supplier not found' });
+        }
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error updating supplier:', error);
+        res.status(500).json({ message: "Error updating supplier" });
+    }
+};
 
 // =====================================================
 // CATEGORIES AND UNITS MANAGEMENT

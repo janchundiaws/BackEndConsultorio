@@ -27,7 +27,7 @@ import {
     createSupplier,
     getSuppliers,
     getSupplierById,
-    
+    updateSuppliers,
     // Categories and Units
     getSupplyCategories,
     getUnitsOfMeasure
@@ -539,6 +539,47 @@ router.get('/inventory/suppliers/', getSuppliers);
  *         description: Supplier not found
  */
 router.get('/inventory/suppliers/:filterField/:value', getSupplierById);
+
+/**
+ * @swagger
+ * /inventory/suppliers/{id}:
+ *   put:
+ *     summary: Update supplier
+ *     tags: [Inventory]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               code:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               business_name:
+ *                 type: string
+ *               tax_id:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               main_contact:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Supplier updated successfully
+ */
+router.put('/inventory/suppliers/:id', updateSuppliers);
 
 // =====================================================
 // CATEGORIES AND UNITS ROUTES
