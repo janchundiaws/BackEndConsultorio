@@ -803,8 +803,16 @@ export const updateSuppliers = async (req, res) => {
                 payload.email, id, payload.tenant_id
             ]
         );
+
+    res.status(200).json(result.rows[0]);
+
+} catch (error) {
+    console.error('Error updating supplier:', error);
+    res.status(500).json({ message: "Error updating supplier" });
+}
     }
 };
+
 
 // =====================================================
 // CATEGORIES AND UNITS MANAGEMENT
