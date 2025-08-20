@@ -771,7 +771,7 @@ export const getSupplierById = async (req, res) => {
     }
 };
 
-// Update supply
+// Update suppliers
 export const updateSuppliers = async (req, res) => {
     const { id } = req.params;
 
@@ -810,6 +810,7 @@ export const updateSuppliers = async (req, res) => {
     console.error('Error updating supplier:', error);
     res.status(500).json({ message: "Error updating supplier" });
 }
+    }
 };
 
 
