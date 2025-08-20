@@ -578,6 +578,12 @@ router.get('/inventory/suppliers/:filterField/:value', getSupplierById);
  *     responses:
  *       200:
  *         description: Supplier updated successfully
+ *       401:
+ *         description: Invalid or expired token
+ *       404:
+ *         description: Supplier not found
+ *       500:
+ *         description: Error updating supplier 
  */
 router.put('/inventory/suppliers/:id', updateSuppliers);
 
@@ -594,6 +600,10 @@ router.put('/inventory/suppliers/:id', updateSuppliers);
  *     responses:
  *       200:
  *         description: List of supply categories
+ *       404:
+ *         description: Supplier not found
+ *       500:
+ *         description: Error updating supplier categories
  */
 router.get('/inventory/categories/', getSupplyCategories);
 

@@ -804,53 +804,14 @@ export const updateSuppliers = async (req, res) => {
             ]
         );
 
-    let query = "";
-    let queryValue = value;
+    res.status(200).json(result.rows[0]);
 
-    switch (filterField) {
-        case 'id':
-            // Convert to number (validate that it's an integer)
-            const id = parseInt(value, 10);
-
-            if (isNaN(id)) {
-                return res.status(400).json({ error: 'Invalid ID. Must be a number' });
-            }
-            queryValue = id;
-            query = 'SELECT * FROM inventory.suppliers WHERE supplier_id = $1 AND tenant_id = $2 AND status = true';
-            break;
-
-        case 'code':
-            query = 'SELECT * FROM inventory.suppliers WHERE code = $1 AND tenant_id = $2 AND status = true';
-            break;
-
-        case 'name':
-            query = 'SELECT * FROM inventory.suppliers WHERE name ILIKE $1 AND tenant_id = $2 AND status = true';
-            queryValue = `%${value}%`;
-            break;
-
-        case 'business_name':
-            query = 'SELECT * FROM inventory.suppliers WHERE business_name ILIKE $1 AND tenant_id = $2 AND status = true';
-            queryValue = `%${value}%`;
-            break;
-
-        default:
-            return res.status(400).json({ error: 'Invalid filter' });
-    }
-
-    try {
-        const result = await pool.query(query, [queryValue, payload.tenant_id]);
-
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Supplier not found' });
-        }
-
-        res.json(result.rows);
-    } catch (error) {
-        console.error('Error updating supplier:', error);
-        res.status(500).json({ message: "Error updating supplier" });
-    }
+} catch (error) {
+    console.error('Error updating supplier:', error);
+    res.status(500).json({ message: "Error updating supplier" });
+}
 };
+
 
 // =====================================================
 // CATEGORIES AND UNITS MANAGEMENT
