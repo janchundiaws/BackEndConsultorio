@@ -771,6 +771,7 @@ export const getSupplierById = async (req, res) => {
     }
 };
 
+
 // Update supplier
 export const updateSuppliers = async (req, res) => {
     const { id } = req.params;
