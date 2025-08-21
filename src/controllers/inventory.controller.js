@@ -810,7 +810,7 @@ export const updateSuppliers = async (req, res) => {
         res.status(200).json(result.rows[0]);
 
     } catch (error) {
-        console.error('Error updating supplier:', error);
+        console.error('Error updating supplier:', error.message);
         res.status(500).json({ message: "Error updating supplier" });
     }
 };
