@@ -780,6 +780,12 @@ export const updateSuppliers = async (req, res) => {
         return res.status(401).json({ message: 'Invalid or expired token' });
     }
 
+    // Validate ID parameter
+    const supplierId = parseInt(id, 10);
+    if (isNaN(supplierId)) {
+        return res.status(400).json({ message: 'Invalid supplier ID. Must be a number' });
+    }
+
     const {
         code,
         name,
@@ -791,27 +797,48 @@ export const updateSuppliers = async (req, res) => {
         main_contact
     } = req.body;
 
+    // Validate required fields
+    if (!code || !name || !business_name) {
+        return res.status(400).json({ 
+            message: 'Missing required fields. Code, name, and business_name are required' 
+        });
+    }
+
+    // Validate email format if provided
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
     try {
+        console.log('Updating supplier with ID:', supplierId, 'for tenant:', payload.tenant_id);
+        console.log('Update data:', { code, name, business_name, tax_id, address, phone, email, main_contact });
+
         const result = await pool.query(
             `UPDATE inventory.suppliers SET 
                 code = $1, name = $2, business_name = $3, tax_id = $4, address = $5,
-                phone = $6, email = $7, main_contact = $8, updated_by = $9
-            WHERE supplier_id = $10 AND tenant_id = $11 RETURNING *`,
+                phone = $6, email = $7, main_contact = $8, updated_by = $9, updated_at = CURRENT_TIMESTAMP
+            WHERE supplier_id = $10 AND tenant_id = $11 AND status = true RETURNING *`,
             [
                 code, name, business_name, tax_id, address, phone, email, main_contact,
-                payload.email, id, payload.tenant_id
+                payload.email, supplierId, payload.tenant_id
             ]
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Supplier not found' });
+            return res.status(404).json({ 
+                message: 'Supplier not found or inactive. ID: ' + supplierId 
+            });
         }
 
+        console.log('Supplier updated successfully:', result.rows[0].supplier_id);
         res.status(200).json(result.rows[0]);
 
     } catch (error) {
         console.error('Error updating supplier:', error.message);
-        res.status(500).json({ message: "Error updating supplier" });
+        console.error('Full error:', error);
+        res.status(500).json({ 
+            message: "Error updating supplier: " + error.message 
+        });
     }
 };
 
