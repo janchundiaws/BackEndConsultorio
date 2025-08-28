@@ -830,15 +830,17 @@ export const updateSuppliers = async (req, res) => {
             });
         }
 
+
         console.log('Supplier updated successfully:', result.rows[0].supplier_id);
+
         res.status(200).json(result.rows[0]);
 
     } catch (error) {
-        console.error('Error updating supplier:', error.message);
         console.error('Full error:', error);
         res.status(500).json({ 
             message: "Error updating supplier: " + error.message 
         });
+
     }
 };
 
