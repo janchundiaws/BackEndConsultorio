@@ -224,8 +224,9 @@ export const createAttachment = async (req, res) => {
         return res.status(401).json({ message: 'Token inválido o expirado' });
     }
 
-    const { history_id, filename, mime_type, base64_content } = req.body;
-
+    const { history_id } = req.params;
+    const { filename, mime_type, base64_content } = req.body;
+    //console.log(req.body);
     try {
         // Verificar que el historial clínico existe y pertenece al tenant
         const historyCheck = await pool.query(
