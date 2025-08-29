@@ -5,7 +5,8 @@ import {
   getDentists,
   getOffices,
   getAppointments,
-  getMaritalStatus
+  getMaritalStatus,
+  getEstadisticas
 } from "../controllers/config.controller.js";
 import { verificarToken } from '../helpers/jwt.js';
 
@@ -92,5 +93,19 @@ router.get("/appointments",verificarToken,  getAppointments);
  *         description: Lista de maritalStatus
  */
 router.get("/maritalStatus",verificarToken,  getMaritalStatus);
+
+/**
+ * @swagger
+ * /estadisticas:
+ *   get:
+ *     summary: Obtener todas las estadisticas
+ *     tags: [Master]
+ *     responses:
+ *       200:
+ *         description: Lista de estadisticas
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get("/estadisticas",verificarToken,  getEstadisticas);
 
 export default router;
