@@ -1,4 +1,8 @@
 import { pool } from "../db.js";
+import { decodeToken } from './../helpers/jwt.js';
+
+// Debug: verificar importación
+console.log('decodeToken imported:', typeof decodeToken);
 
 export const getBloodTypes = async (req, res) => {
   try{
@@ -41,16 +45,6 @@ export const getOffices = async (req, res) => {
 };
 
 
-export const getAppointments = async (req, res) => {
-  try{
-    const response = await pool.query("SELECT * FROM office.appointments ORDER BY id ASC");
-    res.status(200).json(response.rows);
-  }  catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
-};
-
 export const getMaritalStatus= async (req, res) => {
   try{
     const response = await pool.query("SELECT * FROM config.marital_status ORDER BY id ASC");
@@ -63,9 +57,15 @@ export const getMaritalStatus= async (req, res) => {
 
 export const getEstadisticas = async (req, res) => {
   try{
+    // Debug: verificar que decodeToken esté disponible
+    if (typeof decodeToken !== 'function') {
+      console.error('decodeToken no está definido como función');
+      return res.status(500).json({ error: 'decodeToken function not available' });
+    }
+    
     const payload = decodeToken(req.headers.authorization);
     if (!payload) {
-        return res.status(401).json({ message: 'Invalid or expired token' });
+        return res.status(401).json({ message: 'Token inválido o expirado' });
     }
 
     let query = `
@@ -97,5 +97,7 @@ export const getEstadisticas = async (req, res) => {
   }  catch (error) {
     return res.status(500).json({ error: error.message });
   }
+
+};
 
 };
