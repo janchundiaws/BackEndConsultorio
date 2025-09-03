@@ -4,7 +4,6 @@ import {
   getDocumentTypes,
   getDentists,
   getOffices,
-  getAppointments,
   getMaritalStatus,
   getEstadisticas
 } from "../controllers/config.controller.js";
@@ -68,19 +67,6 @@ router.get("/dentists",verificarToken,  getDentists);
  *         description: Lista de Offices
  */
 router.get("/offices",verificarToken,  getOffices);
-
-
-/**
- * @swagger
- * /appointments:
- *   get:
- *     summary: Obtener todos los Appointments
- *     tags: [Master]
- *     responses:
- *       200:
- *         description: Lista de Appointments
- */
-router.get("/appointments",verificarToken,  getAppointments);
 
 /**
  * @swagger
