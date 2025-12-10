@@ -79,9 +79,22 @@ export const updateCurrentUser = async (req, res) => {
     const userId = req.usuario.id;
     const { name, email } = req.body;
 
+    // Validate input
+    if (!name || !email) {
+      return res.status(400).json({ message: "Name and email are required" });
+    }
+
+    if (typeof name !== 'string' || name.trim().length === 0) {
+      return res.status(400).json({ message: "Name must be a non-empty string" });
+    }
+
+    if (typeof email !== 'string' || !email.includes('@')) {
+      return res.status(400).json({ message: "Valid email is required" });
+    }
+
     const { rows } = await pool.query(
       "UPDATE identity.users SET name = $1, email = $2 WHERE id = $3 RETURNING id, tenant_id, name, email, role, status, created_at",
-      [name, email, userId]
+      [name.trim(), email.trim(), userId]
     );
 
     if (rows.length === 0) {

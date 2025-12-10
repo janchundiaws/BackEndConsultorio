@@ -64,14 +64,22 @@ router.get("/users/me", verificarToken, getCurrentUser);
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - email
  *             properties:
  *               name:
  *                 type: string
+ *                 description: Nombre del usuario (requerido)
  *               email:
  *                 type: string
+ *                 format: email
+ *                 description: Email del usuario (requerido)
  *     responses:
  *       200:
  *         description: Perfil actualizado exitosamente
+ *       400:
+ *         description: Datos inválidos
  *       401:
  *         description: No autorizado
  *       404:
