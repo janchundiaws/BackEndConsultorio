@@ -84,6 +84,8 @@ router.get("/users/me", verificarToken, getCurrentUser);
  *         description: No autorizado
  *       404:
  *         description: Usuario no encontrado
+ *       409:
+ *         description: El email ya está en uso por otro usuario
  */
 router.put("/users/me", verificarToken, updateCurrentUser);
 

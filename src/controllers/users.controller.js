@@ -88,8 +88,20 @@ export const updateCurrentUser = async (req, res) => {
       return res.status(400).json({ message: "Name must be a non-empty string" });
     }
 
-    if (typeof email !== 'string' || !email.includes('@')) {
+    // Basic email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (typeof email !== 'string' || !emailRegex.test(email.trim())) {
       return res.status(400).json({ message: "Valid email is required" });
+    }
+
+    // Check if email is already in use by another user
+    const emailCheck = await pool.query(
+      "SELECT id FROM identity.users WHERE email = $1 AND id != $2",
+      [email.trim(), userId]
+    );
+
+    if (emailCheck.rows.length > 0) {
+      return res.status(409).json({ message: "Email is already in use" });
     }
 
     const { rows } = await pool.query(
