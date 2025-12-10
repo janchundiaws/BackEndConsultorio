@@ -55,3 +55,41 @@ export const deleteUser = async (req, res) => {
 
   return res.sendStatus(204);
 };
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const userId = req.usuario.id;
+    const response = await pool.query(
+      "SELECT id, tenant_id, name, email, role, status, created_at FROM identity.users WHERE id = $1",
+      [userId]
+    );
+
+    if (response.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(response.rows[0]);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateCurrentUser = async (req, res) => {
+  try {
+    const userId = req.usuario.id;
+    const { name, email } = req.body;
+
+    const { rows } = await pool.query(
+      "UPDATE identity.users SET name = $1, email = $2 WHERE id = $3 RETURNING id, tenant_id, name, email, role, status, created_at",
+      [name, email, userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json(rows[0]);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};

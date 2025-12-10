@@ -5,6 +5,8 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  getCurrentUser,
+  updateCurrentUser,
 } from "../controllers/users.controller.js";
 import { verificarToken } from '../helpers/jwt.js';
 import { requireRoles } from '../middlewares/auth.middleware.js';
@@ -29,6 +31,53 @@ const router = Router();
  *         description: Lista de usuarios
  */
 router.get("/users",verificarToken,requireRoles('admin'),  getUsers);
+
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Obtener perfil del usuario actual
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario autenticado
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.get("/users/me", verificarToken, getCurrentUser);
+
+/**
+ * @swagger
+ * /users/me:
+ *   put:
+ *     summary: Actualizar perfil del usuario actual
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Perfil actualizado exitosamente
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.put("/users/me", verificarToken, updateCurrentUser);
 
 /**
  * @swagger
